@@ -1,0 +1,69 @@
+.nav-md .container.body .col-md-3.left_col{
+    position: static;
+    min-height: 1000px;
+}
+.nav-sm .container.body .col-md-3.left_col{
+    position: static;
+    min-height: 1000px;
+}
+.product{
+    background-color: #fff;
+    color: #000;
+}
+.product .product--name th{
+    font-size: 20px;
+}
+.product .product--name th a{
+    color: #000;
+    font-size: 15px;
+}
+.product .product--name th a:hover{
+    color: #ccc;
+}
+.product table tr th{
+    border: 1px solid #000;
+}
+.product tr th{
+    text-align: center;
+}
+.product td{
+    text-align: center;
+    border: 1px solid #000;
+}
+
+
+
+
+
+/* Add product */
+
+.product .product-add td{
+    border:none;
+    padding:5px;
+}
+.product form button{
+    float:right;
+}
+.product-add{
+    margin: 20px auto;
+    width: 555px;
+}
+.product-add input{
+    width: 100%;
+    text-align: center;
+}
+textarea {
+    padding: 10px;
+    vertical-align: top;
+    width: 100%;
+}
+
+/* edit product */
+
+.table-edit{
+    width: 600px;
+    height: 800px;
+}
+.table-edit input{
+    text-align: center;
+}
