@@ -259,9 +259,8 @@
                 </div>  
             </div>
             </form>
-            <form class="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
-                          action="xulithanhtoanmomo_atm.php">
-                <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
+            <form class="" method="POST" target="" enctype="application/x-www-form-urlencoded"
+                          action="xutlithanhtoanmomo_atm.php">
                 <input type="submit" name="momo" value="Thanh toán MOMO ATM">
             </form>
             <!-- <div class="buy">
