@@ -83,7 +83,10 @@
                                 }
                                 if ($error == false && !empty($_POST['soluong'])) {
                                     for($i = 0;$i<count($_SESSION['cart']);$i++){
-                                        $id_post = $_SESSION['cart'][$i]['id'];
+                                    $id_post = $_SESSION['cart'][$i]['id'];
+                                    echo '<pre>';
+                                    var_dump($id_post);
+                                    echo '</pre>';
                                     $products = mysqli_query($links, "SELECT * FROM product WHERE productID = $id_post");
                                     $total = 0;
                                     $orderProducts = array();
@@ -111,65 +114,12 @@
                                     $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES " . $insertString . ";");
                                 }   
                                     $success = "Đặt hàng thành công";
-                                    $momo = "Thanh toán MOMO thành công";
                                     unset($_SESSION['cart']);
-                             }
+                                }
                                 //  echo '<p style="text-align:center">'.$error.'</p>';
-                                
-                                    
-                    }
-                    elseif (isset($_POST['momo'])){
-                        foreach($_SESSION['cart'] as $key => $value){
-                            $id_post = $_value['id'];
-                        $products = mysqli_query($links, "SELECT * FROM product WHERE productID = $id_post");
-                        $total = 0;
-                        $orderProducts = array();
-                        $row = mysqli_fetch_array($products);
-                        $orderProducts[] = $row;
-                        $total += $row['price'] * $_POST['soluong'];
-                        $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
-                        // $cusID = mysqli_query($links, "SELECT cusID FROM `customer` ORDER BY cusID DESC LIMIT 1");
-                        // sleep(5);
-                        // $add = mysqli_fetch_all($cusID);
-                        // var_dump($add[0]);
-                        $last_id = mysqli_insert_id($links);
-                        $mysqltime = date ("Y-m-d H:i:s", $phptime);
-                        $insertOrder = mysqli_query($links, "INSERT INTO `orderinf` (`orderID`, `customerID`, `total`, `orderDate`, `status`) VALUES ('', '$last_id', '$total', '$mysqltime', '1')");
-                        $last_order = mysqli_insert_id($links);
-                        $insertString = "";
-                        $gia = $_POST['giathanh'];
-                        $soluong = $_POST['soluong'];
-                        foreach ($orderProducts as $key => $product) {
-                            $insertString .= "('', '$last_order', '$row[0]', '$row[10]', '$soluong','$total')";
-                            if ($key != count($orderProducts) - 1) {
-                                $insertString .= ",";
                             }
-                        }
-                        $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES " . $insertString . ";");
-                    }
-                                    $momo = "Thanh toán MOMO thành công";
-                                    unset($_SESSION['cart']);
-                }
                         
-                    
-                }
-        }
-                if(isset($_GET['partnerCode'])){
-                    $partnerCode = $_GET['partnerCode'];
-                    $orderID = $_GET['orderID'];
-                    $amount = $_GET['amount'];
-                    $orderInfo = $_GET['orderInfo'];
-                    $orderType = $_GET['orderType'];
-                    $transId = $_GET['transId'];
-                    $payType = $_GET['payType'];
-                //insert database momo
-                $insert_momo = "INSERT INTO tbl_momo(partner_code,order_id,amount,order_info,order_type,trans_id,pay_type)
-                VALUE ('".$partnerCode."','".$orderID."','".$amount."','".$orderInfo."','".$orderType."','".$trans_id."','".$payType."')";
-                $cart_query = mysqli_query($links,$insert_momo);
-                
-                    
-
-                    }
+                }}
             ?>  
 <!DOCTYPE html>
 <html lang="en">
@@ -291,13 +241,7 @@
                 <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
                     <?= $success ?>. 
                 </div>
-            <?php } elseif(!empty($cart_query)) { ?>
-                <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                <?= $momo?>
-                </div>
-            <?php 
-             
-        } ?>
+            <?php } ?>
                 <div class="row" style="align-items: initial;">
                     <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
                             <p>Tên</p>
@@ -322,16 +266,14 @@
                 </div>  
             </div>
             </form>
-            
             <form 
             class="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
-                          action="xulithanhtoanmomo_atm.php?name=<?php echo $name?>">
+                          action="xulithanhtoanmomo_atm.php">
                 <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
                 <input 
-                style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:100% ;"
+                style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:131px ;"
                 type="submit" name="momo" value="Thanh toán MOMO ATM">
             </form>
-            
             <!-- <div class="buy">
                     <a href="checkout.php" class="btn" style="padding: 8px 20px;">Thanh toán &#8594;</a>
             </div> -->

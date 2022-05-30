@@ -2,14 +2,8 @@
 <?php
 header('Content-type: text/html; charset=utf-8');
 $total = $_POST['total'];
-// $total_number = str_replace( ',', '', $total );
-$name = $_POST['name'];
-echo $name;
-$address = $_POST['address'];
-$city = $_POST['city'];
-$district = $_POST['district'];
-$village = $_POST['village'];
-$tel = $_POST['tel'];
+$total_number = str_replace( ',', '', $total );
+echo $total_number;
 function execPostRequest($url, $data)
 {
     $ch = curl_init($url);
@@ -41,8 +35,8 @@ $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
 $orderInfo = "Thanh toán qua MoMo";
 $amount = $total_number;
 $orderId = time() ."";
-$redirectUrl = "http://localhost/RedStore/cart.php?action=submit";
-$ipnUrl = "http://localhost/RedStore/cart.php?action=submit";
+$redirectUrl = "http://localhost/RedStore/cart.php";
+$ipnUrl = "http://localhost/RedStore/cart.php";
 $extraData = "";
 
 
@@ -65,9 +59,7 @@ $extraData = "";
         'lang' => 'vi',
         'extraData' => $extraData,
         'requestType' => $requestType,
-        'signature' => $signature,
-        'name' => $name,
-    );
+        'signature' => $signature);
     $result = execPostRequest($endpoint, json_encode($data));
     $jsonResult = json_decode($result, true);  // decode json
     header('Location: ' . $jsonResult['payUrl']);

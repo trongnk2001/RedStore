@@ -42,7 +42,7 @@
 <?php 
                 $error = false;
                 $success = false;
-                 if(isset($_GET['action'])){
+                 if(isset($_GET['action']) or isset($_GET['xulithanhtoanmomo_atm.php'])){
                      $name = $_POST['name'];
                      $address = $_POST['address'];
                      $city = $_POST['city'];
@@ -115,8 +115,6 @@
                                     unset($_SESSION['cart']);
                              }
                                 //  echo '<p style="text-align:center">'.$error.'</p>';
-                                
-                                    
                     }
                     elseif (isset($_POST['momo'])){
                         foreach($_SESSION['cart'] as $key => $value){
@@ -149,11 +147,9 @@
                     }
                                     $momo = "Thanh toán MOMO thành công";
                                     unset($_SESSION['cart']);
-                }
+                    }
                         
-                    
-                }
-        }
+                }}
                 if(isset($_GET['partnerCode'])){
                     $partnerCode = $_GET['partnerCode'];
                     $orderID = $_GET['orderID'];
@@ -322,16 +318,14 @@
                 </div>  
             </div>
             </form>
-            
             <form 
             class="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
-                          action="xulithanhtoanmomo_atm.php?name=<?php echo $name?>">
+                          action="xulithanhtoanmomo_atm.php">
                 <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
                 <input 
                 style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:100% ;"
                 type="submit" name="momo" value="Thanh toán MOMO ATM">
             </form>
-            
             <!-- <div class="buy">
                     <a href="checkout.php" class="btn" style="padding: 8px 20px;">Thanh toán &#8594;</a>
             </div> -->

@@ -2,9 +2,8 @@
 <?php
 header('Content-type: text/html; charset=utf-8');
 $total = $_POST['total'];
-// $total_number = str_replace( ',', '', $total );
+$total_number = str_replace( ',', '', $total );
 $name = $_POST['name'];
-echo $name;
 $address = $_POST['address'];
 $city = $_POST['city'];
 $district = $_POST['district'];

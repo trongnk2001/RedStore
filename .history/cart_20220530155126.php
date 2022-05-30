@@ -325,7 +325,7 @@
             
             <form 
             class="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
-                          action="xulithanhtoanmomo_atm.php?name=<?php echo $name?>">
+                          action="cart.php?action=submit">
                 <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
                 <input 
                 style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:100% ;"
