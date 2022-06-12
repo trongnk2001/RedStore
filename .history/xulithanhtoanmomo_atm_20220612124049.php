@@ -77,6 +77,7 @@ $extraData = "";
 
     $array_cart = array($_SESSION['cart']);
     $array_cart += $array_infor;
+    if ($error == false && !empty($_POST['soluong'])) {
         $total = 0;
         for($i = 1; $i <= count($array_cart[0]); $i++){
             $total = $array_cart[0][$i-1]['price']*$array_cart[0][$i-1]['soluong'];
@@ -111,7 +112,7 @@ $extraData = "";
             $gia = $array_cart[0][$i-1]['price'];
             $soluong = $array_cart[0][$i-1]['soluong'];
             $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES ('', '$idord','$product_ID', '$gia','$soluong', '$total')");
-    }
+    }}
     $result = execPostRequest($endpoint, json_encode($data));
     $jsonResult = json_decode($result, true);  // decode json
     // header('Location: ' . $jsonResult['payUrl']);

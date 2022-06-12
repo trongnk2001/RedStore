@@ -314,7 +314,7 @@
                 </table>
             </div>
             <form action="" method="POST">
-                <div id="cod" class="small-container" style="padding:0px 0px; margin-bottom: 200px;">
+                <div id="cod" class="small-container" style="padding:0px 0px">
                     <h3 style="padding: 0px 339px;background-color: #ff523b;">Thông tin giao hàng COD</h3>
                     <?php if (!empty($error)) { ?> 
                     <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
@@ -362,52 +362,7 @@
             </form>
            
             
-            <div id="momo" >
-            <form 
-            id="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
-                          action="xulithanhtoanmomo_atm.php?action=<?php echo $name?>" >
-                <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
-                <div class="small-container" style="padding:0px 0px">
-                    <h3 style="padding: 0px 339px;background-color: #ff523b;">Thông tin giao hàng MOMO</h3>
-                    <?php if (!empty($error)) { ?> 
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                        <?= $error ?>
-                    </div>
-                <?php } elseif (!empty($success)) { ?>
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                        <?= $success ?>. 
-                    </div>
-                <?php } elseif(!empty($cart_query)) { ?>
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                    <?= $momo?>
-                    </div>
-                <?php 
-             
-                    } ?>
-                <div class="row" style="align-items: initial;">
-                    <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
-                            <p>Tên</p>
-                            <input type="text" name="name" placeholder="Họ Tên" style="width:300px">
-                            <p>Số điện thoại</p>
-                            <input type="text" name ="tel" placeholder="Xin vui lòng điền số điện thoại của bạn" style="width:300px">
-                    </div>
-                        <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
-                                <p>Địa chỉ nhận hàng</p>
-                                <input type="text" name ="address" placeholder="Vui lòng điền địa chỉ của bạn">
-                                <p>Tỉnh/ Thành phố</p>
-                                <input type="text" name ="city" placeholder="Vui lòng điền tỉnh/ thành phố">
-                                <p>Quận/ Huyện</p>
-                                <input type="text" name ="district" placeholder="Vui lòng điền quận/ huyện">
-                                <p>Phường/ Xã</p>
-                                <input type="text" name = "village" placeholder="Vui lòng điền phường/ xã">
-                            <div class="buy" style="text-align: center;margin-left: -30px;float:initial">
-                            <input  type="submit" name="momo" value="Thanh toán MOMO &#8594" style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:auto ;">
-                        </div>
-                        </div>
-                    </div>  
-                </div>
-            </form>
-            </div>
+            
         
            
     <!-- footer -->
@@ -470,7 +425,52 @@
             }
         }
     </script> 
-     
+     <div id="momo" style="display:hide">
+            <form 
+            id="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
+                          action="xulithanhtoanmomo_atm.php?action=<?php echo $name?>" >
+                <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
+                <div class="small-container" style="padding:0px 0px">
+                    <h3 style="padding: 0px 339px;background-color: #ff523b;">Thông tin giao hàng MOMO</h3>
+                    <?php if (!empty($error)) { ?> 
+                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
+                        <?= $error ?>
+                    </div>
+                <?php } elseif (!empty($success)) { ?>
+                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
+                        <?= $success ?>. 
+                    </div>
+                <?php } elseif(!empty($cart_query)) { ?>
+                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
+                    <?= $momo?>
+                    </div>
+                <?php 
+             
+                    } ?>
+                <div class="row" style="align-items: initial;">
+                    <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
+                            <p>Tên</p>
+                            <input type="text" name="name" placeholder="Họ Tên" style="width:300px">
+                            <p>Số điện thoại</p>
+                            <input type="text" name ="tel" placeholder="Xin vui lòng điền số điện thoại của bạn" style="width:300px">
+                    </div>
+                        <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
+                                <p>Địa chỉ nhận hàng</p>
+                                <input type="text" name ="address" placeholder="Vui lòng điền địa chỉ của bạn">
+                                <p>Tỉnh/ Thành phố</p>
+                                <input type="text" name ="city" placeholder="Vui lòng điền tỉnh/ thành phố">
+                                <p>Quận/ Huyện</p>
+                                <input type="text" name ="district" placeholder="Vui lòng điền quận/ huyện">
+                                <p>Phường/ Xã</p>
+                                <input type="text" name = "village" placeholder="Vui lòng điền phường/ xã">
+                            <div class="buy" style="text-align: center;margin-left: -30px;float:initial">
+                            <input  type="submit" name="momo" value="Thanh toán MOMO &#8594" style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:auto ;">
+                        </div>
+                        </div>
+                    </div>  
+                </div>
+            </form>
+            </div>
             <script>
                 var cod = document.getElementById("cod")
                 var momo = document.getElementById("momo")

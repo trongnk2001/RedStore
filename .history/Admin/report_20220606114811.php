@@ -254,7 +254,7 @@
             }
         ?>
         
-        <div class="container" style="width:900px;margin-top: 70px;">
+        <div class="container" style="width:900px;">
             <h2 align="center">Biểu đồ Line</h2>
             <h3 align="center">Tổng tiền và tổng hoá đơn theo từng tháng </h3>   
             <br /><br />
@@ -262,7 +262,7 @@
 
             </div>
         </div>
-        <div class="container" style="width:900px;margin-top: 70px;">
+        <div class="container" style="width:900px;">
             <h2 align="center">Biểu đồ Bar</h2>
             <br /><br />
             <div id="chart-1">

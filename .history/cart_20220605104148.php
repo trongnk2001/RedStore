@@ -5,7 +5,6 @@
     // tru số luong 
     // xoá sản phẩm
     // thêm sản phẩm vào giỏ hàng
-    
     if(isset($_POST['themgiohang'])){
         $id = $_GET['productID'];
         $sl = $_POST['sl'];
@@ -50,7 +49,6 @@
                      $district = $_POST['district'];
                      $village = $_POST['village'];
                      $tel = $_POST['tel'];
-                     $array_infor = array($name,$address,$city, $district, $village, $tel);
                      switch($_GET['action']){
                          case "submit":
                             if(isset($_POST['update_click'])){
@@ -84,43 +82,36 @@
                                     $error = "Giỏ hàng rỗng";
                                 }
                                 $array_cart = array($_SESSION['cart']);
-                                $array_cart += $array_infor;
                                 if ($error == false && !empty($_POST['soluong'])) {
-                                    $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
-                                    $total = 0;
-                                    for($i = 1; $i <= count($array_cart[0]); $i++){
-                                        $total = $array_cart[0][$i-1]['price']*$array_cart[0][$i-1]['soluong'];
-                                        $tongtien += $total;
-                                    }
-                                    $cusID = mysqli_query($links, "SELECT * FROM customer ORDER BY cusID DESC LIMIT 1");
-                                    $add = mysqli_fetch_all($cusID);
-                                    $idcus = $add[0][0];
-                                    $last_id = mysqli_insert_id($links);
-                                    $mysqltime = date ("Y-m-d H:i:s", $phptime);
-                                    $insertOrder = mysqli_query($links, "INSERT INTO orderinf (orderID, customerID, total, orderDate, status) VALUES ('', '$idcus', '$tongtien', '$mysqltime', 'COD')");
-                                        
-                                    for($i = 1; $i <= count($array_cart[0]); $i++){
-                                        
-                                    $products = mysqli_query($links, "SELECT * FROM product WHERE productID = $i");
+                                    echo '<pre>';
+                                    var_dump($array_cart[0][0]);
+                                    echo '</pre>';
+                                    $products = mysqli_query($links, "SELECT * FROM product WHERE productID = $id_post");
                                     $total = 0;
                                     $orderProducts = array();
                                     $row = mysqli_fetch_array($products);
                                     $orderProducts[] = $row;
-                                    
-                                    $total += $array_cart[0][$i-1]['price']*$array_cart[0][$i-1]['soluong'];
-                                    
-                                    // $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
-                                    $ordID = mysqli_query($links, "SELECT * FROM orderinf ORDER BY orderID DESC LIMIT 1");
-                                    $for_ordID = mysqli_fetch_all($ordID);
-                                    $idord = $for_ordID[0][0];
-
-                                    $product_ID = $array_cart[0][$i-1]['id'];
+                                    $total += $row['price'] * $_POST['soluong'];
+                                    $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
+                                    // $cusID = mysqli_query($links, "SELECT cusID FROM `customer` ORDER BY cusID DESC LIMIT 1");
+                                    // sleep(5);
+                                    // $add = mysqli_fetch_all($cusID);
+                                    // var_dump($add[0]);
+                                    $last_id = mysqli_insert_id($links);
+                                    $mysqltime = date ("Y-m-d H:i:s", $phptime);
+                                    $insertOrder = mysqli_query($links, "INSERT INTO `orderinf` (`orderID`, `customerID`, `total`, `orderDate`, `status`) VALUES ('', '$last_id', '$total', '$mysqltime', '1')");
                                     $last_order = mysqli_insert_id($links);
                                     $insertString = "";
-                                    $gia = $array_cart[0][$i-1]['price'];
-                                    $soluong = $array_cart[0][$i-1]['soluong'];
-                                    $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES ('', '$idord','$product_ID', '$gia','$soluong', '$total')");
-                            }
+                                    $gia = $_POST['giathanh'];
+                                    $soluong = $_POST['soluong'];
+                                    foreach ($orderProducts as $key => $product) {
+                                        $insertString .= "('', '$last_order', '$row[0]', '$row[10]', '$soluong','$total')";
+                                        if ($key != count($orderProducts) - 1) {
+                                            $insertString .= ",";
+                                        }
+                                    }
+                                    $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES " . $insertString . ";");
+                              
                                     $success = "Đặt hàng thành công";
                                     $momo = "Thanh toán MOMO thành công";
                                     unset($_SESSION['cart']);
@@ -129,23 +120,43 @@
                                 
                                     
                     }
+                    elseif (isset($_POST['momo'])){
+                        foreach($_SESSION['cart'] as $key => $value){
+                            $id_post = $_value['id'];
+                        $products = mysqli_query($links, "SELECT * FROM product WHERE productID = $id_post");
+                        $total = 0;
+                        $orderProducts = array();
+                        $row = mysqli_fetch_array($products);
+                        $orderProducts[] = $row;
+                        $total += $row['price'] * $_POST['soluong'];
+                        $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
+                        // $cusID = mysqli_query($links, "SELECT cusID FROM `customer` ORDER BY cusID DESC LIMIT 1");
+                        // sleep(5);
+                        // $add = mysqli_fetch_all($cusID);
+                        // var_dump($add[0]);
+                        $last_id = mysqli_insert_id($links);
+                        $mysqltime = date ("Y-m-d H:i:s", $phptime);
+                        $insertOrder = mysqli_query($links, "INSERT INTO `orderinf` (`orderID`, `customerID`, `total`, `orderDate`, `status`) VALUES ('', '$last_id', '$total', '$mysqltime', '1')");
+                        $last_order = mysqli_insert_id($links);
+                        $insertString = "";
+                        $gia = $_POST['giathanh'];
+                        $soluong = $_POST['soluong'];
+                        foreach ($orderProducts as $key => $product) {
+                            $insertString .= "('', '$last_order', '$row[0]', '$row[10]', '$soluong','$total')";
+                            if ($key != count($orderProducts) - 1) {
+                                $insertString .= ",";
+                            }
+                        }
+                        $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES " . $insertString . ";");
+                    }
+                                    $momo = "Thanh toán MOMO thành công";
+                                    unset($_SESSION['cart']);
+                }
                         
                     
-            }
-    }
-    if(isset($_POST['xulithanhtoanmomo_atm'])){
-        $name1 = $_POST['name'];
-        $address1 = $_POST['address'];
-        $city1 = $_POST['city'];
-        $district1 = $_POST['district'];
-        $village1 = $_POST['village'];
-        $tel1 = $_POST['tel'];
-        var_dump($name1);
-    }
-    
+                }
+        }
                 if(isset($_GET['partnerCode'])){
-                    $success = "Đặt hàng thành công";
-                    unset($_SESSION['cart']);
                     $partnerCode = $_GET['partnerCode'];
                     $orderID = $_GET['orderID'];
                     $amount = $_GET['amount'];
@@ -158,51 +169,9 @@
                 VALUE ('".$partnerCode."','".$orderID."','".$amount."','".$orderInfo."','".$orderType."','".$trans_id."','".$payType."')";
                 $cart_query = mysqli_query($links,$insert_momo);
                 
-                
-                $array_cart = array($_SESSION['cart']);
-        $array_cart += $array_infor;
-        if ($error == false && !empty($_POST['soluong'])) {
-            $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
-            $total = 0;
-            for($i = 1; $i <= count($array_cart[0]); $i++){
-                $total = $array_cart[0][$i-1]['price']*$array_cart[0][$i-1]['soluong'];
-                $tongtien += $total;
-            }
-            $cusID = mysqli_query($links, "SELECT * FROM customer ORDER BY cusID DESC LIMIT 1");
-            $add = mysqli_fetch_all($cusID);
-            $idcus = $add[0][0];
-            $last_id = mysqli_insert_id($links);
-            $mysqltime = date ("Y-m-d H:i:s", $phptime);
-            $insertOrder = mysqli_query($links, "INSERT INTO orderinf (orderID, customerID, total, orderDate, status) VALUES ('$orderID', '$idcus', '$tongtien', '$mysqltime', 'MOMO')");
-                
-            for($i = 1; $i <= count($array_cart[0]); $i++){
-                
-            $products = mysqli_query($links, "SELECT * FROM product WHERE productID = $i");
-            $total = 0;
-            $orderProducts = array();
-            $row = mysqli_fetch_array($products);
-            $orderProducts[] = $row;
-            
-            $total += $array_cart[0][$i-1]['price']*$array_cart[0][$i-1]['soluong'];
-            
-            // $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
-            $ordID = mysqli_query($links, "SELECT * FROM orderinf ORDER BY orderID DESC LIMIT 1");
-            $for_ordID = mysqli_fetch_all($ordID);
-            $idord = $for_ordID[0][0];
+                    
 
-            $product_ID = $array_cart[0][$i-1]['id'];
-            $last_order = mysqli_insert_id($links);
-            $insertString = "";
-            $gia = $array_cart[0][$i-1]['price'];
-            $soluong = $array_cart[0][$i-1]['soluong'];
-            $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES ('', '$idord','$product_ID', '$gia','$soluong', '$total')");
-        }
-            $success = "Đặt hàng thành công";
-            $momo = "Thanh toán MOMO thành công";
-            unset($_SESSION['cart']);
-    }
-                
-            }
+                    }
             ?>  
 <!DOCTYPE html>
 <html lang="en">
@@ -237,7 +206,7 @@
                 <img src="images/menu.png" class="menu-icon" onclick="menutoggle()">
             </div>
         </div>
-    <form class="cod" action="cart.php?action=submit"  method="post" style="display: block">
+        <form action="cart.php?action=submit"  method="post">
         <!-- cart items details -->
         <div class="small-container cart-page">
             <table>
@@ -313,24 +282,24 @@
                     </tr>
                 </table>
             </div>
-            <form action="" method="POST">
-                <div id="cod" class="small-container" style="padding:0px 0px; margin-bottom: 200px;">
-                    <h3 style="padding: 0px 339px;background-color: #ff523b;">Thông tin giao hàng COD</h3>
-                    <?php if (!empty($error)) { ?> 
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                        <?= $error ?>
-                    </div>
-                <?php } elseif (!empty($success)) { ?>
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                        <?= $success ?>. 
-                    </div>
-                <?php } elseif(!empty($cart_query)) { ?>
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                    <?= $momo?>
-                    </div>
-                <?php 
+            <form action="">
+            <div class="small-container" style="padding:0px 0px">
+                <h3 style="padding: 0px 405px;background-color: #ff523b;">Thông tin giao hàng</h3>
+                <?php if (!empty($error)) { ?> 
+                <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
+                    <?= $error ?>
+                </div>
+            <?php } elseif (!empty($success)) { ?>
+                <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
+                    <?= $success ?>. 
+                </div>
+            <?php } elseif(!empty($cart_query)) { ?>
+                <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
+                <?= $momo?>
+                </div>
+            <?php 
              
-                    } ?>
+        } ?>
                 <div class="row" style="align-items: initial;">
                     <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
                             <p>Tên</p>
@@ -338,76 +307,38 @@
                             <p>Số điện thoại</p>
                             <input type="text" name ="tel" placeholder="Xin vui lòng điền số điện thoại của bạn" style="width:300px">
                     </div>
-                        <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
-                                <p>Địa chỉ nhận hàng</p>
-                                <input type="text" name ="address" placeholder="Vui lòng điền địa chỉ của bạn">
-                                <p>Tỉnh/ Thành phố</p>
-                                <input type="text" name ="city" placeholder="Vui lòng điền tỉnh/ thành phố">
-                                <p>Quận/ Huyện</p>
-                                <input type="text" name ="district" placeholder="Vui lòng điền quận/ huyện">
-                                <p>Phường/ Xã</p>
-                                <input type="text" name = "village" placeholder="Vui lòng điền phường/ xã">
-                            <div class="buy" style="text-align: center;margin-left: -30px;float:initial">
-                            <input  type="submit" name="update_click" value="Cập nhật &#8635" style="display: inline-block;background: #4CAF50;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:131px ;">
-                            <input  type="submit" name="update_checkout" value="Đặt hàng &#8594" style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:131px ;">
-                            <button type="button" onclick="myFunction()">Thanh toán MOMO</button>    
-                        </div>
-                        </div>
-                    </div>  
-                    
-                </div>
-            </form>
-            
-          
-            </form>
-           
-            
-            <div id="momo" >
-            <form 
-            id="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
-                          action="xulithanhtoanmomo_atm.php?action=<?php echo $name?>" >
-                <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
-                <div class="small-container" style="padding:0px 0px">
-                    <h3 style="padding: 0px 339px;background-color: #ff523b;">Thông tin giao hàng MOMO</h3>
-                    <?php if (!empty($error)) { ?> 
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                        <?= $error ?>
-                    </div>
-                <?php } elseif (!empty($success)) { ?>
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                        <?= $success ?>. 
-                    </div>
-                <?php } elseif(!empty($cart_query)) { ?>
-                    <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
-                    <?= $momo?>
-                    </div>
-                <?php 
-             
-                    } ?>
-                <div class="row" style="align-items: initial;">
                     <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
-                            <p>Tên</p>
-                            <input type="text" name="name" placeholder="Họ Tên" style="width:300px">
-                            <p>Số điện thoại</p>
-                            <input type="text" name ="tel" placeholder="Xin vui lòng điền số điện thoại của bạn" style="width:300px">
+                            <p>Địa chỉ nhận hàng</p>
+                            <input type="text" name ="address" placeholder="Vui lòng điền địa chỉ của bạn">
+                            <p>Tỉnh/ Thành phố</p>
+                            <input type="text" name ="city" placeholder="Vui lòng điền tỉnh/ thành phố">
+                            <p>Quận/ Huyện</p>
+                            <input type="text" name ="district" placeholder="Vui lòng điền quận/ huyện">
+                            <p>Phường/ Xã</p>
+                            <input type="text" name = "village" placeholder="Vui lòng điền phường/ xã">
+                        <div class="buy" style="text-align: center;margin-left: -30px;float:initial">
+                        <input  type="submit" name="update_click" value="Cập nhật &#8635" style="display: inline-block;background: #4CAF50;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:131px ;">
+                        <input  type="submit" name="update_checkout" value="Đặt hàng &#8594" style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:131px ;">
+                        </div>
                     </div>
-                        <div class="col-2 inf" style="display: flex;align-items: center;flex-direction: column;">
-                                <p>Địa chỉ nhận hàng</p>
-                                <input type="text" name ="address" placeholder="Vui lòng điền địa chỉ của bạn">
-                                <p>Tỉnh/ Thành phố</p>
-                                <input type="text" name ="city" placeholder="Vui lòng điền tỉnh/ thành phố">
-                                <p>Quận/ Huyện</p>
-                                <input type="text" name ="district" placeholder="Vui lòng điền quận/ huyện">
-                                <p>Phường/ Xã</p>
-                                <input type="text" name = "village" placeholder="Vui lòng điền phường/ xã">
-                            <div class="buy" style="text-align: center;margin-left: -30px;float:initial">
-                            <input  type="submit" name="momo" value="Thanh toán MOMO &#8594" style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:auto ;">
-                        </div>
-                        </div>
-                    </div>  
-                </div>
-            </form>
+                </div>  
             </div>
+            </form>
+            
+            <form 
+            class="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
+                          action="xulithanhtoanmomo_atm.php?name=<?php echo $name?>">
+                <input type="hidden" value="<?php echo number_format($total)?>" name ="total">
+                <input 
+                style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:100% ;"
+                type="submit" name="momo" value="Thanh toán MOMO ATM">
+            </form>
+            
+            <!-- <div class="buy">
+                    <a href="checkout.php" class="btn" style="padding: 8px 20px;">Thanh toán &#8594;</a>
+            </div> -->
+        </div>
+        </form>
         
            
     <!-- footer -->
@@ -470,14 +401,5 @@
             }
         }
     </script> 
-     
-            <script>
-                var cod = document.getElementById("cod")
-                var momo = document.getElementById("momo")
-                function myFunction() {
-                    cod.style.display = "none"
-                    momo.style.display = "block"
-                }
-            </script>
 </body>
 </html>

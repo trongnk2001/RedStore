@@ -314,7 +314,7 @@
                 </table>
             </div>
             <form action="" method="POST">
-                <div id="cod" class="small-container" style="padding:0px 0px; margin-bottom: 200px;">
+                <div id="cod" class="small-container" style="padding:0px 0px">
                     <h3 style="padding: 0px 339px;background-color: #ff523b;">Thông tin giao hàng COD</h3>
                     <?php if (!empty($error)) { ?> 
                     <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
@@ -358,11 +358,16 @@
                 </div>
             </form>
             
-          
+            <script>
+                var cod = document.getElementById("cod")
+                var momo = document.getElementById("momo")
+                function myFunction() {
+                    cod.style.display = "none"
+                    momo.style.display = "block"
+                }
+            </script>
             </form>
-           
-            
-            <div id="momo" >
+            <div id="momo" style="display:hide">
             <form 
             id="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
                           action="xulithanhtoanmomo_atm.php?action=<?php echo $name?>" >
@@ -408,6 +413,8 @@
                 </div>
             </form>
             </div>
+            
+            
         
            
     <!-- footer -->
@@ -470,14 +477,5 @@
             }
         }
     </script> 
-     
-            <script>
-                var cod = document.getElementById("cod")
-                var momo = document.getElementById("momo")
-                function myFunction() {
-                    cod.style.display = "none"
-                    momo.style.display = "block"
-                }
-            </script>
 </body>
 </html>

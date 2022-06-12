@@ -202,7 +202,7 @@
             ?>
             <div class="right_col" role="main">
           <div class="row" style="display: flex;">
-            <div class=" top_tiles" style="margin: 10px 0;flex-grow: 1;">
+            <div class=" top_tiles" style="margin: 10px 0;">
               <div class="col-md-3 col-sm-3  tile">
                 <span>Tổng số doanh thu</span>
                 <h2><?php echo  number_format($row[0]) ?></h2>
@@ -241,7 +241,7 @@
             $query = "SELECT * FROM `orderinf` ORDER BY `orderID` DESC";
             $result = mysqli_query($links, $query);
 
-            $date = "SELECT YEAR(orderDate) AS year, MONTH(orderDate) AS month, SUM(total) AS total, COUNT(orderID) AS id FROM orderinf GROUP BY year,month ORDER BY year ASC";
+            $date = "SELECT YEAR(orderDate) AS year, MONTH(orderDate) AS month, SUM(total) AS total, COUNT(orderID) AS id FROM orderinf GROUP BY year,month";
             $result1 = mysqli_query($links, $date);
 
             $month = $daterow['month'];
@@ -254,18 +254,11 @@
             }
         ?>
         
-        <div class="container" style="width:900px;margin-top: 70px;">
-            <h2 align="center">Biểu đồ Line</h2>
+        <div class="container" style="width:900px;">
+            <h2 align="center">Biểu đồ Morris</h2>
             <h3 align="center">Tổng tiền và tổng hoá đơn theo từng tháng </h3>   
             <br /><br />
             <div id="chart">
-
-            </div>
-        </div>
-        <div class="container" style="width:900px;margin-top: 70px;">
-            <h2 align="center">Biểu đồ Bar</h2>
-            <br /><br />
-            <div id="chart-1">
 
             </div>
         </div>
@@ -316,17 +309,6 @@
 <script>
             Morris.Line({
             element : 'chart',
-            data:[<?php echo $chart_data; ?>],
-            xkey:['month'],
-            ykeys:['year', 'tongtien','tonghoadon'],
-            labels:['Year', 'Tổng tiền','Hoá đơn'],
-            hideHover:'auto',
-            stacked:true
-            });
-</script>
-<script>
-            Morris.Bar({
-            element : 'chart-1',
             data:[<?php echo $chart_data; ?>],
             xkey:['month'],
             ykeys:['year', 'tongtien','tonghoadon'],

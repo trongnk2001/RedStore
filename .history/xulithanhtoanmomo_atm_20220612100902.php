@@ -5,15 +5,15 @@ session_start();
 include_once './Admin/connect.php';
 $total = $_POST['total'];
 $total_number = str_replace( ',', '', $total );
-if(isset($_GET['action'])){
-    $name = $_POST['name'];
-    $address = $_POST['address'];
-    $city = $_POST['city'];
-    $district = $_POST['district'];
-    $village = $_POST['village'];
-    $tel = $_POST['tel'];
-    $array_infor = array($name,$address,$city, $district, $village, $tel);
-}
+$name = $_POST['name'];
+$address = $_POST['address'];
+$city = $_POST['city'];
+$district = $_POST['district'];
+$village = $_POST['village'];
+$tel = $_POST['tel'];
+$array_infor = array($name,$address,$city, $district, $village, $tel);
+var_dump("array name".$array_infor);
+$_SESSION['form_data'] = $_POST;
 var_dump($_SESSION['form_data']);
 var_dump($_SESSION['cart']);
 function execPostRequest($url, $data)
@@ -74,44 +74,6 @@ $extraData = "";
         'signature' => $signature,
     );
     $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
-
-    $array_cart = array($_SESSION['cart']);
-    $array_cart += $array_infor;
-        $total = 0;
-        for($i = 1; $i <= count($array_cart[0]); $i++){
-            $total = $array_cart[0][$i-1]['price']*$array_cart[0][$i-1]['soluong'];
-            $tongtien += $total;
-        }
-        var_dump("TTTTTTTTTTTTT".$tongtien);
-            $cusID = mysqli_query($links, "SELECT * FROM customer ORDER BY cusID DESC LIMIT 1");
-            $add = mysqli_fetch_all($cusID);
-            $idcus = $add[0][0];
-        var_dump("IDDDDDDDDDDDD".$idcus);
-            $last_id = mysqli_insert_id($links);
-            $mysqltime = date ("Y-m-d H:i:s", $phptime);
-            $insertOrder = mysqli_query($links, "INSERT INTO orderinf (orderID, customerID, total, orderDate, status) VALUES ('$orderID', '$idcus', '$tongtien', '$mysqltime', 'MOMO')");
-                
-            for($i = 1; $i <= count($array_cart[0]); $i++){
-                
-            $products = mysqli_query($links, "SELECT * FROM product WHERE productID = $i");
-            $total = 0;
-            $orderProducts = array();
-            $row = mysqli_fetch_array($products);
-            $orderProducts[] = $row;
-            $total += $array_cart[0][$i-1]['price']*$array_cart[0][$i-1]['soluong'];
-            
-            // $insertCus = mysqli_query($links, "INSERT INTO customer(cusID,name,adress,tel) VALUE ('','$name','$address.$village.$district.$city','$tel')");
-            $ordID = mysqli_query($links, "SELECT * FROM orderinf ORDER BY orderID DESC LIMIT 1");
-            $for_ordID = mysqli_fetch_all($ordID);
-            $idord = $for_ordID[0][0];
-
-            $product_ID = $array_cart[0][$i-1]['id'];
-            $last_order = mysqli_insert_id($links);
-            $insertString = "";
-            $gia = $array_cart[0][$i-1]['price'];
-            $soluong = $array_cart[0][$i-1]['soluong'];
-            $insertOrderDetails = mysqli_query($links, "INSERT INTO `orderdetails` (`id`, `orderID`, `productID`, `price`, `quantity`, `total`) VALUES ('', '$idord','$product_ID', '$gia','$soluong', '$total')");
-    }
     $result = execPostRequest($endpoint, json_encode($data));
     $jsonResult = json_decode($result, true);  // decode json
     // header('Location: ' . $jsonResult['payUrl']);

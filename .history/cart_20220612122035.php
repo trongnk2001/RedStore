@@ -314,7 +314,7 @@
                 </table>
             </div>
             <form action="" method="POST">
-                <div id="cod" class="small-container" style="padding:0px 0px; margin-bottom: 200px;">
+                <div id="cod" class="small-container" style="padding:0px 0px">
                     <h3 style="padding: 0px 339px;background-color: #ff523b;">Thông tin giao hàng COD</h3>
                     <?php if (!empty($error)) { ?> 
                     <div id="notify-msg" style="text-align: center; margin-top: 20px;font-weight: 600;">
@@ -350,19 +350,23 @@
                             <div class="buy" style="text-align: center;margin-left: -30px;float:initial">
                             <input  type="submit" name="update_click" value="Cập nhật &#8635" style="display: inline-block;background: #4CAF50;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:131px ;">
                             <input  type="submit" name="update_checkout" value="Đặt hàng &#8594" style="display: inline-block;background: #ff523b;color: #fff;padding: 8px 30px;margin: 30px 0;border-radius: 30px;transition: background 0.5s;border: none;cursor: pointer;height:32px;width:131px ;">
-                            <button type="button" onclick="myFunction()">Thanh toán MOMO</button>    
-                        </div>
+                            </div>
                         </div>
                     </div>  
-                    
+                    <button type="button" onclick="myFunction()">Thanh toán MOMO</button>
                 </div>
             </form>
             
-          
+            <script>
+                var cod = document.getElementById("cod")
+                var momo = document.getElementById("momo")
+                function myFunction() {
+                    cod.style.display = "none"
+                    momo.style.display = "block"
+                }
+            </script>
             </form>
-           
-            
-            <div id="momo" >
+            <div id="momo">
             <form 
             id="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded"
                           action="xulithanhtoanmomo_atm.php?action=<?php echo $name?>" >
@@ -408,6 +412,8 @@
                 </div>
             </form>
             </div>
+            
+            
         
            
     <!-- footer -->
@@ -470,14 +476,5 @@
             }
         }
     </script> 
-     
-            <script>
-                var cod = document.getElementById("cod")
-                var momo = document.getElementById("momo")
-                function myFunction() {
-                    cod.style.display = "none"
-                    momo.style.display = "block"
-                }
-            </script>
 </body>
 </html>
